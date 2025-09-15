@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GenArt - History of Generated Images</title>
+  <meta name="description" content="View your AI image generation history on GenArt. See all your past prompts and images in one place.">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+  <div class="w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 min-h-screen flex flex-col">
+    
+    <!-- Header -->
+    <header class="flex justify-between items-center py-5">
+      <a href="index.html">
+        <img src="https://iili.io/FsAoG2I.md.png" alt="GenArt Logo" class="h-8">
+      </a>
+      <nav class="flex items-center space-x-6">
+        <a href="index.html" class="text-sm font-medium text-gray-500 hover:text-gray-800">Home</a>
+        <a href="pricing.html" class="text-sm font-medium text-gray-500 hover:text-gray-800">Pricing</a>
+        <!-- <img src="C:\Users\sandi\Desktop\GenArt\Logo.svg" alt="Logo" class="h-8 w-8" /> -->
+        <a href="history.html" class="text-sm font-medium text-gray-900">History</a>
+      </nav>
+    </header>
+
+    <!-- History Section -->
+    <main class="flex-grow">
+      <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Your Image Generation History</h1>
+      <div id="history-grid" class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <!-- Example item -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden border">
+          <img src="https://iili.io/FiiqmhB.md.png" alt="Generated image example" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <p class="text-sm text-gray-700 line-clamp-2">Prompt: A futuristic city skyline at dusk</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 border-t mt-10">
+      <p class="text-xs text-gray-500">&copy; 2025 GenArt. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Example: load history dynamically (replace with your backend/API/localStorage)
+    const historyGrid = document.getElementById("history-grid");
+    const historyData = JSON.parse(localStorage.getItem("genart-history")) || [];
+
+    historyData.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "bg-white rounded-xl shadow-md overflow-hidden border";
+      card.innerHTML = `
+        <img src="${item.image}" alt="Generated image" class="w-full h-48 object-cover">
+        <div class="p-4">
+          <p class="text-sm text-gray-700 line-clamp-2">Prompt: ${item.prompt}</p>
+        </div>
+      `;
+      historyGrid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
