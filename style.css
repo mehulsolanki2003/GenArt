@@ -499,25 +499,4 @@ textarea::-webkit-scrollbar-thumb:hover {
 
 }
 
-#history-sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 280px;
-  height: 100%;
-  background: white;
-  border-right: 1px solid #ddd;
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-  z-index: 1000;
-}
 
-#history-sidebar.open {
-  transform: translateX(0);
-}
-
-#history-list {
-  overflow-y: auto;
-  height: calc(100% - 50px);
-  padding: 10px;
-}
