@@ -33,7 +33,7 @@
 
     <link rel="icon" type="image/png" href="favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
-<!--     <a href="history.html" id="history-link" class="hidden">History</a> -->
+
     <link rel="stylesheet" href="style.css">
 
     <!-- SEO: Expanded JSON-LD Structured Data (Schema). Helps Google understand your site's content for rich results. -->
@@ -84,16 +84,17 @@
             <div id="header-auth-section" class="hidden md:flex items-center space-x-6">
                 <a href="pricing.html" class="text-sm font-medium text-gray-500 hover:text-gray-800 transition-colors">Pricing</a>
                 <div id="generation-counter" class="text-sm font-medium text-gray-500"></div> 
-<!--                 <a href="history.html" id="history-link" class="hidden">History</a> -->
-<!--                 <button onclick="loadHistory()">History</button> -->
+
                 <div id="main-content"></div>
                 <button id="auth-btn" class="text-sm font-medium border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 hover:border-gray-400 transition-all duration-300">
                     Sign In
                 </button>
             </div>
-            <button id="open-history-btn" class="text-sm font-medium border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 hover:border-gray-400 transition-all duration-300">
-              History
-            </button>
+            <div id="history">
+                <button id="open-history-btn" class="text-sm font-medium border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 hover:border-gray-400 transition-all duration-300">
+                  History
+                </button>
+            </div>
 
             <div class="md:hidden">
                 <button id="mobile-menu-btn" class="p-2 rounded-md text-gray-500 hover:text-gray-800 hover:bg-gray-100">
@@ -332,7 +333,10 @@
         </div>
     </div>
 
-    <!-- History Sidebar -->
+   
+
+    <script type="module" src="script.js"></script>
+     <!-- History Sidebar -->
     <aside id="history-sidebar" class="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 overflow-y-auto">
         <div class="flex justify-between items-center p-4 border-b">
             <h2 class="text-lg font-semibold text-gray-800">History</h2>
@@ -342,10 +346,9 @@
             <!-- History items will appear here -->
         </div>
     </aside>
-
-    <script type="module" src="script.js"></script>
 </body>
 </html>
+
 
 
 
