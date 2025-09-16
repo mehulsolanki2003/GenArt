@@ -64,9 +64,116 @@ document.addEventListener('DOMContentLoaded', () => {
     DOMElements.regeneratePromptInput = document.getElementById('regenerate-prompt-input');
     DOMElements.regenerateBtn = document.getElementById('regenerate-btn');
     DOMElements.messageBox = document.getElementById('message-box');
+
+
     
     initializeEventListeners();
 });
+
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const openBtn = document.getElementById('open-history-btn');
+    const closeBtn = document.getElementById('close-history-btn');
+    const overlay = document.getElementById('history-overlay');
+    const sidebar = document.getElementById('history-sidebar');
+    const historyList = document.getElementById('history-list');
+    const clearBtn = document.getElementById('clear-history-btn');
+    const emptyEl = document.getElementById('history-empty');
+
+    const STORAGE_KEY = 'genart_history_v1';
+    const MAX_ITEMS = 50;
+
+    function openSidebar() {
+      sidebar.classList.remove('translate-x-full');
+      overlay.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+      renderHistory();
+    }
+    function closeSidebar() {
+      sidebar.classList.add('translate-x-full');
+      overlay.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+    openBtn?.addEventListener('click', openSidebar);
+    closeBtn?.addEventListener('click', closeSidebar);
+    overlay?.addEventListener('click', closeSidebar);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSidebar(); });
+    clearBtn?.addEventListener('click', () => {
+      if (confirm('Clear all history?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        renderHistory();
+      }
+    });
+
+    function getHistory() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+      catch { return []; }
+    }
+    window.saveToHistory = function(prompt, imageUrl) {
+      const history = getHistory();
+      history.unshift({ prompt, imageUrl, time: new Date().toISOString() });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(0, MAX_ITEMS)));
+      renderHistory();
+    };
+    function renderHistory() {
+      const history = getHistory();
+      historyList.innerHTML = '';
+      if (!history.length) {
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+      emptyEl.classList.add('hidden');
+      history.forEach((item, idx) => {
+        const el = document.createElement('div');
+        el.className = "history-item flex items-center gap-3 p-2 rounded hover:bg-gray-50 cursor-pointer border";
+        el.innerHTML = `
+          <div class="w-14 h-14 flex-shrink-0 rounded overflow-hidden bg-gray-100">
+            ${item.imageUrl ? `<img src="${item.imageUrl}" class="w-full h-full object-cover"/>` : ''}
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-xs text-gray-400">${new Date(item.time).toLocaleString()}</p>
+            <p class="text-sm text-gray-800 truncate">${item.prompt || '(no prompt)'}</p>
+          </div>`;
+        el.addEventListener('click', () => loadHistoryItem(idx));
+        historyList.appendChild(el);
+      });
+    }
+    window.loadHistoryItem = function(idx) {
+      const history = getHistory();
+      const item = history[idx];
+      const grid = document.getElementById('image-grid');
+      const result = document.getElementById('result-container');
+      grid.innerHTML = '';
+      if (item.imageUrl) {
+        grid.innerHTML = `<img src="${item.imageUrl}" class="w-full rounded-lg shadow-md"/>`;
+      } 
+      else {
+        grid.innerHTML = `<div class="p-4 border rounded-lg bg-white">${item.prompt}</div>`;
+      }
+      result.classList.remove('hidden');
+      closeSidebar();
+    };
+
+    // Fake generator for demo
+    const generateBtn = document.getElementById('generate-btn');
+    generateBtn.addEventListener('click', () => {
+      const prompt = document.getElementById('prompt-input').value.trim();
+      const grid = document.getElementById('image-grid');
+      const result = document.getElementById('result-container');
+      const loader = document.getElementById('loading-indicator');
+      result.classList.remove('hidden');
+      loader.classList.remove('hidden');
+      grid.innerHTML = '';
+      setTimeout(() => {
+        loader.classList.add('hidden');
+        const fakeUrl = `https://picsum.photos/seed/${encodeURIComponent(prompt || Date.now())}/400/300`;
+        grid.innerHTML = `<img src="${fakeUrl}" class="w-full rounded-lg shadow-md"/>`;
+        saveToHistory(prompt, fakeUrl);
+      }, 2000);
+    });
+
+    renderHistory();
+  });
 
 function initializeEventListeners() {
     onAuthStateChanged(auth, user => updateUIForAuthState(user));
@@ -442,5 +549,6 @@ function initializeCursor() {
         el.addEventListener('mouseout', () => DOMElements.cursorOutline.classList.remove('cursor-hover'));
     });
 }
+
 
 
