@@ -134,8 +134,8 @@ function toggleModal(modal, show) {
 
 async function updateUIForAuthState(user) {
     if (user) {
-        document.getElementById("history-link").classList.remove("hidden");
-        document.getElementById("mobile-history-link").classList.remove("hidden");
+        // document.getElementById("history-link").classList.remove("hidden");
+        // document.getElementById("mobile-history-link").classList.remove("hidden");
         try {
             const token = await user.getIdToken();
             const response = await fetch('/api/credits', {
@@ -156,8 +156,8 @@ async function updateUIForAuthState(user) {
         }
     } else {
         currentUserCredits = 0;
-        document.getElementById("history-link").classList.add("hidden");
-        document.getElementById("mobile-history-link").classList.add("hidden");
+        // document.getElementById("history-link").classList.add("hidden");
+        // document.getElementById("mobile-history-link").classList.add("hidden");
 
         updateCreditDisplay();
     }
@@ -442,4 +442,5 @@ function initializeCursor() {
         el.addEventListener('mouseout', () => DOMElements.cursorOutline.classList.remove('cursor-hover'));
     });
 }
+
 
